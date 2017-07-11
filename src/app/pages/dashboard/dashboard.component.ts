@@ -8,8 +8,6 @@ import { LocalDataSource } from 'ng2-smart-table';
   templateUrl: './dashboard.html'
 })
 export class Dashboard {
-
-  constructor() {
-  }
+  	constructor() {}
 
 }

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
  
 @Injectable()
 export class ChartDataService {
-    constructor(private http: Http){   }
+    constructor(private http: Http){ }
     
     private extractData(res: Response) {
         let body = res.json();
@@ -39,7 +39,8 @@ export class ChartDataService {
         let headers = new Headers({'content-type': 'application/json'});
         headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
         let options = new RequestOptions({ headers: headers});
-        var payload = JSON.stringify({kpi_id: kpi.kpi_name,version_ids: kpi.versions,report_type: "0",name: [],series_name: ""});
+        var payload = JSON.stringify({kpi_id: kpi.kpi_name,version_ids: kpi.versions,report_type: "0",name: []
+            ,series_name: ""});
         return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
         /*return this.http.get('assets/files/data.json').map(res => {
             console.log(res);
@@ -51,7 +52,8 @@ export class ChartDataService {
         headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
         let options = new RequestOptions({ headers: headers});
         // var x = id.split('-');
-        // var payload = JSON.stringify({kpi_id: x[0],version_ids: [x[1]],report_type: "0",name: [],series_name: "",datef: (df)?df:null});
+        // var payload = JSON.stringify({kpi_id: x[0],version_ids: [x[1]],report_type: "0",name: [],
+        // series_name: "",datef: (df)?df:null});
         payload = JSON.stringify(payload); 
         console.log(payload);
         return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);

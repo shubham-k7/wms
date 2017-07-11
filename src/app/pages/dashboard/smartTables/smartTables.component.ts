@@ -11,58 +11,40 @@ import { LocalDataSource } from 'ng2-smart-table';
 export class SmartTables {
 
   query: string = '';
-
+  dataTable: any = {title: "Biker"};
   settings = {
     actions: false,
-    add: false,
-    edit: false,
-    delete: false,
-    // add: {
-    //   addButtonContent: '<i class="ion-ios-plus-outline"></i>',
-    //   createButtonContent: '<i class="ion-checkmark"></i>',
-    //   cancelButtonContent: '<i class="ion-close"></i>',
-    // },
-    // edit: {
-    //   editButtonContent: '<i class="ion-edit"></i>',
-    //   saveButtonContent: '<i class="ion-checkmark"></i>',
-    //   cancelButtonContent: '<i class="ion-close"></i>',
-    // },
-    // delete: {
-    //   deleteButtonContent: '<i class="ion-trash-a"></i>',
-    //   confirmDelete: true
-    // },
     columns: {
-      id: {
-        title: 'ID',
+      order_number: {
+        title: 'Order',
         type: 'number'
       },
-      firstName: {
-        title: 'First Name',
+      biker_name: {
+        title: 'Biker',
+        // width: '100px',
         type: 'string'
       },
-      lastName: {
-        title: 'Last Name',
+      customer_name: {
+        title: 'Customer',
         type: 'string'
       },
-      username: {
-        title: 'Username',
+      created_time: {
+        title: 'Date/Time',
         type: 'string'
       },
-      email: {
-        title: 'E-mail',
+      status: {
+        title: 'Status',
         type: 'string'
-      },
-      age: {
-        title: 'Age',
-        type: 'number'
       }
     }
   };
 
   source: LocalDataSource = new LocalDataSource();
-
+  today: Date;
   constructor(protected service: SmartTablesService) {
-    this.service.getData().then((data) => {
+    this.today = new Date();
+    var payload = {from_date: this.today.toString(),to_date: this.today};
+    this.service.getTableData(payload).subscribe((data) => {
       this.source.load(data);
     });
   }
