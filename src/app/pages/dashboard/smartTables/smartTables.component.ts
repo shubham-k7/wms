@@ -53,6 +53,7 @@ export class SmartTables {
     var payload = {from_date: this.yesterday.toISOString().substr(0,10),to_date: this.today.toISOString().substr(0,10)};
     // var payload = {from_date: "2017-07-11",to_date: "2017-07-12"};
     this.service.getTableData(payload).subscribe((data) => {
+      console.log(data.data.data);
       this.source.load(data.data.data);
     });
   }
