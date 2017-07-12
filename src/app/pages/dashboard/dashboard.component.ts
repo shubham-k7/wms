@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
-
+import {Component,ViewChild} from '@angular/core';
+import { ChartsComponent } from './charts/charts.component'; 
+import { SmartTables } from './smartTables/smartTables.component';
 // import { SmartTablesService } from './smartTables.service';
 // -----MaterialDesign Imports-----
 import { DateAdapter } from '@angular/material';
@@ -51,6 +52,8 @@ export class Dashboard {
 			this.filter._sDate = null;
 			this.filter._eDate = null;
 			this.filter._maxDate = null;
+			this.children['chart']._child.update(this.filter);
+			this.children['table']._child.update(this.filter);
 		}
 		switch((event && event.id))
 		{
@@ -58,9 +61,13 @@ export class Dashboard {
 				this.filter._sDate = null;
 				this.filter._eDate = null;
 				this.filter._maxDate = null;
+				this.children['chart']._child.update(this.filter);
+				this.children['table']._child.udpate(this.filter);
 				break;
 			case 2:
 				this.filter._mon = null;
+				this.children['chart']._child.update(this.filter);
+				this.children['table']._child.update(this.filter);
 				break;
 		}
 	}
@@ -91,4 +98,11 @@ export class Dashboard {
 		_filteredDivisions: null,
 		_filter: null,
 	}
+  	@ViewChild('chart') chart: ChartsComponent;
+  	@ViewChild('table') table: SmartTables;
+  	children: Map<string,any> = new Map<string,any>();
+  	ngOnInit() {
+  		this.children['chart'] = {_child: this.chart};
+  		this.children['table'] = {_child: this.table};
+  	}
 }

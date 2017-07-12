@@ -23,7 +23,7 @@ HighchartsExportData(Highcharts);
 })
 export class ChartsComponent implements OnInit {
  
-	constructor(private chartDataService: ChartDataService, 
+	constructor(public chartDataService: ChartDataService, 
 				private chartFilterService: ChartFilterService){ }
 	@Input() filter: any;
 	options = {
@@ -210,10 +210,17 @@ export class ChartsComponent implements OnInit {
 		return data.chart.name;
 	}
 	getCharts() {
-		this.chartDataService.getCharts("shu").subscribe()
+		this.chartDataService.getCharts(this.filter).subscribe((data) => {
+
+		});
+	}
+	update(filter: any) {
+		this.chartDataService.getCharts(filter).subscribe((data) => {
+
+		});
 	}
 	drilldownsAdded: any;
-	chartlist: Map<string,any>
+	chartlist: Map<string,any> = new Map<string,any>();
 	ngOnInit() {
 		this.drilldownsAdded = 0;
 		// this.getCharts();

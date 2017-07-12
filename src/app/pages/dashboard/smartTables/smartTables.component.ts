@@ -47,7 +47,7 @@ export class SmartTables {
   source: LocalDataSource = new LocalDataSource();
   today: Date;
   yesterday: Date;
-  constructor(protected service: SmartTablesService) {
+  constructor(private service: SmartTablesService) {
     this.today = new Date();
     this.yesterday = new Date();
     this.yesterday.setDate(this.yesterday.getDate()-1);
@@ -58,7 +58,11 @@ export class SmartTables {
       this.source.load(data.data.data);
     });
   }
-
+  update(filter: any) {
+    this.service.getTableData(filter).subscribe((data) => {
+      this.source.load(data.data.data);
+    });
+  }
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();

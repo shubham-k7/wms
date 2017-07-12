@@ -68,6 +68,7 @@ export class ChartDataService {
     }
 
     getCharts(payload: any) {
+        console.log(payload);
         var url = 'http://52.70.207.115:8087/pizzahut/v1';
         let headers = new Headers({'content-type': 'application/json'});
         headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
