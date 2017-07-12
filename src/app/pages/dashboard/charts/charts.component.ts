@@ -28,10 +28,7 @@ import { Month } from '../../../../assets/month';
 export class ChartsComponent implements OnInit {
  
 	constructor(private chartDataService: ChartDataService, 
-				// private myDate: DateLocale,
-				private chartFilterService: ChartFilterService){
-					// this.myDate.months = Month;
-	}
+				private chartFilterService: ChartFilterService){ }
 	options = {
 		chart: {
 			name: "biker" ,
@@ -155,10 +152,73 @@ export class ChartsComponent implements OnInit {
 			}]
 		}
 	};
+	chartInit(chartid: string,conf: any): string{
+		// Do NOT REMOVE this. 
+		var comp = this;        
+		// It's used inside chart confs to access ChartComponent instance
+		var data = eval('(' + conf + ')');
+		let prevConfig = this.chartlist[chartid];
+		if(prevConfig) {
+			this.chartlist[chartid] = {...prevConfig,_chart: null};
+		}
+		else{
+			this.chartlist[chartid] = {	
+													_chart:  null,
+													_drilldowns: ['All'],
+													_selectedvalue: null,
+													_maxDate: null,
+													_mon: null,
+													_sDate: null,
+													_eDate: null,
+													_divisions: null,
+													_filteredDivisions: null,
+													_filter: null
+												};									
+		}
+		// console.log(this.kpilist);
+		var chart = new Highcharts.Chart(data);
+		this.chartlist[chartid]._chart = chart;
+		chart.options.drilldown.activeDataLabelStyle = { "cursor": "pointer", "color": "#003399",
+		 "fontWeight": "bold", "textDecoration": "!none","text-transform": "uppercase" };
+		chart.options.drilldown.activeAxisLabelStyle = { "cursor": "pointer", "color": "#003399",
+		 "fontWeight": "bold", "textDecoration": "!none","text-transform": "uppercase" };
+		chart.options.drilldown.drillUpButton = {
+				relativeTo: 'chart',
+				position: {
+					align: "right",
+					y: 6,
+					x: -50
+				},
+				theme: {
+					fill: 'white',
+					'stroke-width': 1,
+					stroke: 'silver',
+					opacity: 0.5,
+					r: 0,
+					states: {
+						hover: {
+							fill: '#41739D',
+							style: {
+								color: "white"
+							},
+							opacity: 1
+						},
+						select: {
+							stroke: '#039',
+							fill: '#bada55'
+						}
+					}
+				}
+			};
+		return data.chart.name;
+	}
+	getCharts() {
+		this.chartDataService.getCharts("shu").subscribe()
+	}
 	drilldownsAdded: any;
 	chartlist: Map<string,any>
 	ngOnInit() {
 		this.drilldownsAdded = 0;
-		// this.getKPIs();
+		// this.getCharts();
 	}
 }

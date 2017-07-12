@@ -14,14 +14,17 @@ export class SmartTables {
   dataTable: any = {title: "Biker"};
   settings = {
     actions: false,
+    pager: {
+      perPage: 5
+    },
     columns: {
       order_number: {
         title: 'Order',
-        type: 'number'
+        type: 'number',
+
       },
       biker_name: {
         title: 'Biker',
-        // width: '100px',
         type: 'string'
       },
       customer_name: {
@@ -30,7 +33,8 @@ export class SmartTables {
       },
       created_time: {
         title: 'Date/Time',
-        type: 'string'
+        valuePrepareFunction: (value) => {
+          return new Date(value).toLocaleString('en-IN')}
       },
       status: {
         title: 'Status',
@@ -41,11 +45,15 @@ export class SmartTables {
 
   source: LocalDataSource = new LocalDataSource();
   today: Date;
+  yesterday: Date;
   constructor(protected service: SmartTablesService) {
     this.today = new Date();
-    var payload = {from_date: this.today.toString(),to_date: this.today};
+    this.yesterday = new Date();
+    this.yesterday.setDate(this.yesterday.getDate()-1);
+    var payload = {from_date: this.yesterday.toISOString().substr(0,10),to_date: this.today.toISOString().substr(0,10)};
+    // var payload = {from_date: "2017-07-11",to_date: "2017-07-12"};
     this.service.getTableData(payload).subscribe((data) => {
-      this.source.load(data);
+      this.source.load(data.data.data);
     });
   }
 

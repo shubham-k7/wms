@@ -31,7 +31,9 @@ export class SmartTablesService {
     	headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
         let options = new RequestOptions({ headers: headers});
         payload = JSON.stringify(payload);
-		return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
+		return Observable.interval(3000).startWith(0).switchMap(() => {
+			return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
+		});
   	}
 	
 }
