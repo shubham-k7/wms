@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Input } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { SmartTablesService } from './smartTables.service';
 import { LocalDataSource } from 'ng2-smart-table';
@@ -10,6 +10,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 })
 export class SmartTables {
 
+  @Input() filter: any;
   query: string = '';
   dataTable: any = {title: "Biker"};
   settings = {

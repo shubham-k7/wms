@@ -57,10 +57,11 @@
 
 select.form-control {
   padding-left: 8px;
+  color: $default-text;
 }
 
 select.form-control:not([multiple]) option {
-  color: $dropdown-text;
+  color: $default-text;
 }
 
 select.form-control[multiple] option {

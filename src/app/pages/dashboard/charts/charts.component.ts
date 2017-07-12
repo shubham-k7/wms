@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 // -----Providers-----
 import { ChartDataService } from './chart-data.service';
@@ -15,10 +15,6 @@ HighchartsMore(Highcharts);
 HighchartsDrilldown(Highcharts);
 HighchartsExporting(Highcharts);
 HighchartsExportData(Highcharts);
-// -----MaterialDesign Imports-----
-import { DateAdapter } from '@angular/material';
-import { DateLocale } from 'md2';
-import { Month } from '../../../../assets/month';
 
 @Component({
 	selector: 'app-chart',
@@ -29,6 +25,7 @@ export class ChartsComponent implements OnInit {
  
 	constructor(private chartDataService: ChartDataService, 
 				private chartFilterService: ChartFilterService){ }
+	@Input() filter: any;
 	options = {
 		chart: {
 			name: "biker" ,

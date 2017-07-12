@@ -1,8 +1,68 @@
 <div class="row">
+	<form class="form-inline my-2 my-lg-0"  style="float: right">
+    	<md-select placeholder="Timeline" [(ngModel)]="filter._selectedvalue" (ngModelChange)="selection($event)" name="option">
+			<md-option>None</md-option>
+			<md-option *ngFor="let option of options" [value]="option">{{option.value}}</md-option>
+		</md-select>
+                            <div *ngIf="filter._selectedvalue && filter._selectedvalue.id==1">
+                                <md2-datepicker name="mon"
+                                placeholder="Month"
+                                [(ngModel)]="filter._mon"
+                                [required]="true"
+                                (onOpen)="setGlobalMaxDate()"
+                                [max]="MAX_DATE"
+                                type="month"
+                                startView="month"
+                                format="MMM y"
+                                touchUi = false
+                                #monthControl="ngModel"
+                                (change)="update($event)"
+                                ></md2-datepicker>
+                            </div>
+                            <div *ngIf="filter._selectedvalue && filter._selectedvalue.id===2">
+                                <md2-datepicker name="sDate"
+                                placeholder="Start"
+                                [(ngModel)]="filter._sDate"
+                                [required]="true"
+                                [max]="MAX_DATE"
+                                (onOpen)="setGlobalMaxDate()"
+                                type="date"
+                                startView="month"
+                                format="d MMMM yy"
+                                touchUi = true
+                                #sdateControl="ngModel"
+                                (change)="setMaxDate()"></md2-datepicker>
+                            </div>
+                            <div *ngIf="filter._selectedvalue && filter._selectedvalue.id===2">
+                                <md2-datepicker name="eDate"
+                                placeholder="End"
+                                (onOpen)="setGlobalMaxDate()"
+                                [(ngModel)]="filter._eDate"
+                                [required]="true"
+                                [min]="filter._sDate"
+                                [max]="filter._maxDate"
+                                type="date"
+                                touchUi = true
+                                startView="month"
+                                format="d MMMM yy"
+                                #edateControl="ngModel"
+                                (change)="update($event)"></md2-datepicker>
+                            </div>
+                            <p-autoComplete [(ngModel)]="filter._divisions" [suggestions]="filter._filteredDivisions" (completeMethod)="filterDivisions($event)" styleClass="wid100" [minLength]="1" placeholder="Filter" [multiple]="true" field="name" name="divisions" (onSelect)="check($event)" (onUnselect)="check($event)">
+                            <ng-template let-brand pTemplate="item">
+                                <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                                    <div style="font-size:18px;float:left;margin:10px 10px 0 0">{{brand.name}}</div>
+                                    <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{brand.type}}</div>
+                                </div>
+                            </ng-template>
+                            </p-autoComplete>
+                        </form>
+</div>
+<div class="row">
   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-	<smart-tables></smart-tables>
+	<smart-tables [filter]="filter"></smart-tables>
   </div>
   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-  	<app-chart></app-chart>
+  	<app-chart [filter]="filter"></app-chart>
   </div>
 </div>

@@ -34,7 +34,7 @@ export class ChartDataService {
         let options = new RequestOptions({ headers: headers});
         return this.http.get(url,options).map(this.extractData).catch(this.handleError);
     }
-    getCharts(kpi: any): Observable<any> {
+    /*getCharts(kpi: any): Observable<any> {
         var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
         let headers = new Headers({'content-type': 'application/json'});
         headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
@@ -42,10 +42,10 @@ export class ChartDataService {
         var payload = JSON.stringify({kpi_id: kpi.kpi_name,version_ids: kpi.versions,report_type: "0",name: []
             ,series_name: ""});
         return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
-        /*return this.http.get('assets/files/data.json').map(res => {
-            console.log(res);
-        }).catch(this.handleError);*/
-    }
+        // return this.http.get('assets/files/data.json').map(res => {
+        //     console.log(res);
+        // }).catch(this.handleError);
+    }*/
     getChart(payload: any): Observable<any> {
         var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
         let headers = new Headers({'content-type': 'application/json'});
@@ -66,5 +66,16 @@ export class ChartDataService {
         let options = new RequestOptions({ headers: headers});
         return this.http.post(url, JSON.stringify(payload),options).map(this.extractData).catch(this.handleError);
     }
+
+    getCharts(payload: any) {
+        var url = 'http://52.70.207.115:8087/pizzahut/v1';
+        let headers = new Headers({'content-type': 'application/json'});
+        headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
+        let options = new RequestOptions({ headers: headers});
+        return Observable.interval(60000).startWith(0).switchMap(()=> {
+            return this.http.post(url,JSON.stringify(payload),options).map(this.extractData).catch(this.handleError);
+        });
+    }
+
 
 }
