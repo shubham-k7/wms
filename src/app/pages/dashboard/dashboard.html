@@ -16,7 +16,7 @@
                                 format="MMM y"
                                 touchUi = false
                                 #monthControl="ngModel"
-                                (change)="update($event)"
+                                (change)="updateChild($event)"
                                 ></md2-datepicker>
                             </div>
                             <div *ngIf="filter._selectedvalue && filter._selectedvalue.id===2">
@@ -46,23 +46,37 @@
                                 startView="month"
                                 format="d MMMM yy"
                                 #edateControl="ngModel"
-                                (change)="update($event)"></md2-datepicker>
+                                (change)="updateChild($event)"></md2-datepicker>
                             </div>
-                            <p-autoComplete [(ngModel)]="filter._divisions" [suggestions]="filter._filteredDivisions" (completeMethod)="filterDivisions($event)" styleClass="wid100" [minLength]="1" placeholder="Filter" [multiple]="true" field="name" name="divisions" (onSelect)="check($event)" (onUnselect)="check($event)">
+                           <!--  <p-autoComplete [(ngModel)]="filter._divisions" [suggestions]="filter._filteredDivisions" (completeMethod)="filterDivisions($event)" styleClass="wid100" [minLength]="1" placeholder="Filter" [multiple]="true" field="name" name="divisions" (onSelect)="check($event)" (onUnselect)="check($event)">
                             <ng-template let-brand pTemplate="item">
                                 <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
                                     <div style="font-size:18px;float:left;margin:10px 10px 0 0">{{brand.name}}</div>
                                     <div style="font-size:18px;float:right;margin:10px 10px 0 0">{{brand.type}}</div>
                                 </div>
                             </ng-template>
-                            </p-autoComplete>
+                            </p-autoComplete> -->
                         </form>
 </div>
 <div class="row">
   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-	<smart-tables [filter]="filter"></smart-tables>
+	<smart-tables [filter]="filter" #table></smart-tables>
   </div>
-  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-  	<app-chart [filter]="filter" #chart></app-chart>
-  </div>
+  <!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"> -->
+	  <ba-card cardTitle="Order Stats- Order Count">
+
+  	<div id ="order_stats-order_count"></div>
+</ba-card>
+</div>
+<div class="row">
+  	<!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"> -->
+	  <!-- <ba-card cardTitle="Inscan_vs_Booked"> -->
+		<div id ="inscan_vs_booked-transition"></div>
+	<!-- </div> -->
+	<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+	  <div id ="inscan_vs_booked-percentage"></div>
+	</div>
+</div>
+<div class="row">
+	
 </div>

@@ -16,6 +16,7 @@ HighchartsDrilldown(Highcharts);
 HighchartsExporting(Highcharts);
 HighchartsExportData(Highcharts);
 
+declare var google: any;
 @Component({
 	selector: 'app-chart',
 	templateUrl: './charts.component.html',
@@ -210,11 +211,12 @@ export class ChartsComponent implements OnInit {
 		return data.chart.name;
 	}
 	getCharts() {
+		// console.log(JSON.stringify(this.filter));
 		this.chartDataService.getCharts(this.filter).subscribe((data) => {
-
 		});
 	}
 	update(filter: any) {
+		// console.log(JSON.stringify(filter));
 		this.chartDataService.getCharts(filter).subscribe((data) => {
 
 		});
@@ -223,6 +225,10 @@ export class ChartsComponent implements OnInit {
 	chartlist: Map<string,any> = new Map<string,any>();
 	ngOnInit() {
 		this.drilldownsAdded = 0;
+		var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: {lat: -25.363, lng: 131.044}
+        });
 		// this.getCharts();
 	}
 }

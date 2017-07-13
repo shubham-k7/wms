@@ -10,7 +10,6 @@ import { routing } from './dashboard.routing';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { SmartTables } from './smartTables';
 import { SmartTablesService } from './smartTables/smartTables.service';
-import { ChartsComponent } from './charts/charts.component';
 // import { ChartsComponent } from './charts/charts.component';
 
 // -----Highcharts Imports-----
@@ -74,7 +73,6 @@ import { Md2Module } from 'md2';
   declarations: [
     Dashboard,
     SmartTables,
-    ChartsComponent,
     // PopularApp,
     // PieChart,
     // TrafficChart,
