@@ -25,10 +25,10 @@ export class Login {
 		this.password = this.form.controls['password'];
 	}
 
-  public onSubmit(values:Object):void {
-	this.submitted = true;
-	if (this.form.valid) {
-		 this.as.login(this.username.value,this.password.value)
+	public onSubmit(values:Object):void {
+		this.submitted = true;
+		if(this.form.valid) {
+			this.as.login(this.username.value,this.password.value)
 			.subscribe(result => {
 					if(result===true){
 						this.error=[];
@@ -37,14 +37,14 @@ export class Login {
 					}
 					else
 					{ 
-					  this.error=[];
+						this.error=[];
 						this.error.push({severity:'error', summary:'Error: ', detail:'Validation failed!'});
 					}
 				},
 				 (err) => {
-				   this.error=[];
-						this.error.push({severity:'error', summary:'Error: ', detail:'Validation failed!'});
+					this.error=[];
+					this.error.push({severity:'error', summary:'Error: ', detail:'Validation failed!'});
 				 });
-	  }
+		}
 	}
 }

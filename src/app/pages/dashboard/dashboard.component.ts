@@ -17,7 +17,6 @@ HighchartsMore(Highcharts);
 HighchartsDrilldown(Highcharts);
 HighchartsExporting(Highcharts);
 HighchartsExportData(Highcharts);
-
 // -----MaterialDesign Imports-----
 import { DateAdapter } from '@angular/material';
 import { DateLocale } from 'md2';
@@ -36,6 +35,8 @@ export class Dashboard {
   		this.myDate.locale = 'en-IN';
   	 	// this.children = new Map<string,any>();
   	}
+  	lat: number = 51.673858;
+  	lng: number = 7.815982;
   	getChartData(event: any,chartid: string): void {
 		var comp=this,t;
 		var x = chartid.split('-').slice(0,2);

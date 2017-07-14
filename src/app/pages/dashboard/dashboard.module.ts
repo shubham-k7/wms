@@ -7,6 +7,8 @@ import { NgaModule } from '../../theme/nga.module';
 import { Dashboard } from './dashboard.component';
 import { routing } from './dashboard.routing';
 
+import { AgmCoreModule } from '@agm/core';
+
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { SmartTables } from './smartTables';
 import { SmartTablesService } from './smartTables/smartTables.service';
@@ -68,7 +70,9 @@ import { Md2Module } from 'md2';
     MdSelectModule,
     MdInputModule,
     Md2Module,
-    // ChartsModule
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAzpgH7DwowdnmBLbST7MgN5JqerU7oB8w'
+    })
   ],
   declarations: [
     Dashboard,

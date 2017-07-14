@@ -1,5 +1,5 @@
 import {Component, ElementRef} from '@angular/core';
-import * as GoogleMapsLoader from 'google-maps';
+// import * as GoogleMapsLoader from 'google-maps';
 declare var google: any;
 @Component({
   selector: 'google-maps',
