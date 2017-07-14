@@ -62,11 +62,12 @@
   <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
 	<smart-tables [filter]="filter" #table></smart-tables>
   </div>
-  <!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"> -->
+  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
 	  <ba-card cardTitle="Order Stats- Order Count">
 
   	<div id ="order_stats-order_count"></div>
 </ba-card>
+</div>
 </div>
 <div class="row">
   	<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
@@ -80,11 +81,14 @@
 	</div>
 </div>
 <div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
+      
       <ba-card cardTitle="Map">
     <agm-map [latitude]="lat" [longitude]="lng">
   <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker> 
     </agm-map>
     </ba-card>
+</div>
 </div>
 <!-- </ion-content> -->
     <!-- <agm-map [latitude]="lat" [longitude]="lng"> -->

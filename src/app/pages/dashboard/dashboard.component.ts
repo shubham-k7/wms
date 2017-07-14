@@ -35,8 +35,8 @@ export class Dashboard {
   		this.myDate.locale = 'en-IN';
   	 	// this.children = new Map<string,any>();
   	}
-  	lat: number = 51.673858;
-  	lng: number = 7.815982;
+  	lat: number = 28.4674579;
+  	lng: number = 77.0822735;
   	getChartData(event: any,chartid: string): void {
 		var comp=this,t;
 		var x = chartid.split('-').slice(0,2);
