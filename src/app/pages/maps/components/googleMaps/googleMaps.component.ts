@@ -11,16 +11,17 @@ export class GoogleMaps {
   constructor(private _elementRef:ElementRef) {
   }
 
-  map: any;
-  initMap() {
+  
+  ngAfterViewInit() {
+    // let el = this._elementRef.nativeElement.querySelector('.google-maps');
+
+    var map: any;
+   function initMap() {
         this.map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -34.397, lng: 150.644},
           zoom: 8
         });
       }
-  ngAfterViewInit() {
-    // let el = this._elementRef.nativeElement.querySelector('.google-maps');
-
     /*// TODO: do not load this each time as we already have the library after first attempt
     GoogleMapsLoader.load((google) => {
       new google.maps.Map(el, {
