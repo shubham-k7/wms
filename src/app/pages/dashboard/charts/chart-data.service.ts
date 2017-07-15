@@ -11,7 +11,7 @@ export class ChartDataService {
     
     private extractData(res: Response) {
         let body = res.json();
-        console.log(body);
+        // console.log(body);
         return body || { };
     }
     private handleError(error: Response | any) {
@@ -25,6 +25,18 @@ export class ChartDataService {
         }
         console.error(errMsg);
         return Observable.throw(errMsg);
+    }
+
+    getChart(payload: any): Observable<any> {
+        var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
+        let headers = new Headers({'content-type': 'application/json'});
+        headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
+        let options = new RequestOptions({ headers: headers});
+        // var x = id.split('-');
+        // var payload = JSON.stringify({kpi_id: x[0],version_ids: [x[1]],report_type: "0",name: [],series_name: "",datef: (df)?df:null});
+        payload = JSON.stringify(payload); 
+        // console.log(payload);
+        return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
     }
 
     getKPIs(): Observable<any> {
@@ -54,7 +66,7 @@ export class ChartDataService {
         // var x = id.split('-');
         // var payload = JSON.stringify({kpi_id: x[0],version_ids: [x[1]],report_type: "0",name: [],series_name: "",datef: (df)?df:null});
         payload = JSON.stringify(payload); 
-        console.log(payload);
+        // console.log(payload);
         return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
     }
 
@@ -63,7 +75,7 @@ export class ChartDataService {
         let headers = new Headers({'content-type': 'application/json'});
         headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
         let options = new RequestOptions({ headers: headers});
-        console.log(JSON.stringify(payload));
+        // console.log(JSON.stringify(payload));
         return this.http.post(url, JSON.stringify(payload),options).map(this.extractData).catch(this.handleError);
     }
 

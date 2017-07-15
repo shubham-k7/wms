@@ -35,9 +35,7 @@ export class Dashboard {
   		this.myDate.locale = 'en-IN';
   	 	// this.children = new Map<string,any>();
   	}
-  	lat: number = 28.4674579;
-  	lng: number = 77.0822735;
-  	getChartData(event: any,chartid: string): void {
+  	public getChartData(event: any,chartid: string): void {
 		var comp=this,t;
 		var x = chartid.split('-').slice(0,2);
 		var kpi_name = x[0];
@@ -46,23 +44,20 @@ export class Dashboard {
 		var list = this.kpilist[kpi_name][chartid]._drilldowns.slice(1,t+1);
 		list.push(event.point.name);
 		let chartConfigs = this.kpilist[kpi_name][chartid];
-		var shallowCopy = { ...chartConfigs,_chart:  null,_filteredDivisions: null };
 		// PAYLOAD for charts, name is a list of filters for charts
-		var payload = {
-				name: list,
-				series_name: event.point.series.name,
-				report_type: t.toString(),
-				chartName: chartid,
-				version_ids: [version_id],
-				kpi_id: kpi_name,
-				/*dftype: (chartConfigs._selectedvalue!==null)?chartConfigs._selectedvalue.id: 0,
-				mon: chartConfigs._mon,
-				sDate: chartConfigs._sDate,
-				eDate: chartConfigs._eDate,
-				divisions: chartConfigs._divisions,
-				filter: chartConfigs._filter*/
-				chartConfigs: shallowCopy
-			};
+		var payload = {name: list,
+					series_name: event.point.series.name,
+					report_type: t.toString(),
+					chartName: chartid,
+					version_ids: [version_id],
+					kpi_id: kpi_name,
+					dftype: (chartConfigs._selectedvalue!==null)?chartConfigs._selectedvalue.id: 0,
+					mon: chartConfigs._mon,
+					zftype: chartConfigs._divisions,
+					sDate: chartConfigs._sDate,
+					eDate: chartConfigs._eDate,
+					divisions: chartConfigs._divisions
+					};
 		this.chartDataService.getChartData(payload).subscribe(series => {
 			var chart;
 			chart = comp.kpilist[payload.kpi_id][chartid]._chart;
@@ -87,17 +82,23 @@ export class Dashboard {
 		});
 	}
 	chartInit(kpi_name: string,conf: any): string{
-		// Do NOT REMOVE this. 
-		var comp = this;        
-		// It's used inside chart confs to access ChartComponent instance
+		var comp = this;        // Do NOT REMOVE this. It's used inside chart confs
 		var data = eval('(' + conf + ')');
 		let prevConfig = this.kpilist[kpi_name][data.chart.name];
 		if(prevConfig) {
-			this.kpilist[kpi_name][data.chart.name] = {...prevConfig,_chart: null};
+			this.kpilist[kpi_name][data.chart.name] = {		_chart:  null,
+															_drilldowns: prevConfig._drilldowns,
+															_selectedvalue: prevConfig._selectedvalue,
+															_maxDate: prevConfig._maxDate,
+															_mon: prevConfig._mon,
+															_sDate: prevConfig._sDate,
+															_eDate: prevConfig._eDate,
+															_divisions: prevConfig._divisions,
+															_filteredDivisions: prevConfig._filteredDivisions
+														};
 		}
 		else{
-			this.kpilist[kpi_name][data.chart.name] = {	
-													_chart:  null,
+			this.kpilist[kpi_name][data.chart.name] = {	_chart:  null,
 													_drilldowns: ['All'],
 													_selectedvalue: null,
 													_maxDate: null,
@@ -105,11 +106,9 @@ export class Dashboard {
 													_sDate: null,
 													_eDate: null,
 													_divisions: null,
-													_filteredDivisions: null,
-													_filter: null
+													_filteredDivisions: null
 												};									
 		}
-		// console.log(this.kpilist);
 		var chart = new Highcharts.Chart(data);
 		this.kpilist[kpi_name][data.chart.name]._chart = chart;
 		chart.options.drilldown.activeDataLabelStyle = { "cursor": "pointer", "color": "#003399", "fontWeight": "bold", "textDecoration": "!none","text-transform": "uppercase" };
@@ -144,12 +143,8 @@ export class Dashboard {
 			};
 		return data.chart.name;
 	}
-	/**
-	  *	Deprecated as of 2017-07-07
-	  * This was used during Drilldown and refresh,
-	  * however it is deprecated in Non-Drilldown Sirwala Chart.
-	  */
-	getDrilldownChart(chartid: string,source: any) {
+	
+	getChart(chartid: string,source: any) {
 		let x = chartid.split('-'),
 			kpi_name = x[0],
 			version = x[1],
@@ -159,16 +154,19 @@ export class Dashboard {
 			chart.showLoading("Fetching Data...");
 		if(chart.insertedTable && chart.insertedTableID)
 			check = chart.insertedTableID;
-
-		var shallowCopy = { ...chartConfigs,_chart:  null,_filteredDivisions: null };
 		var payload = {	kpi_id: kpi_name,
 						version_ids: [x[1]],
 						report_type: "0",
 						name: [],
-						series_name:  null,
-						chartConfigs: shallowCopy
-			};
-		this.chartDataService.getDrilldownChart(payload).subscribe(data => {
+						series_name: "",
+						dftype: (chartConfigs._selectedvalue && chartConfigs._selectedvalue!==null)?chartConfigs._selectedvalue.id: 0,
+						mon: chartConfigs._mon,
+						zftype: chartConfigs._divisions,
+						sDate: chartConfigs._sDate,
+						eDate: chartConfigs._eDate,
+						divisions: chartConfigs._divisions
+					}
+		this.chartDataService.getChart(payload).subscribe(data => {
 			var series = data[0].data;
 			var chartid = this.chartInit(kpi_name,data[0].conf);
 			var chart = this.kpilist[kpi_name][chartid]._chart;
@@ -189,34 +187,8 @@ export class Dashboard {
 		}
 		);
 	}
-	/*setFilterflag(chartid: string) {
-		setTimeout(()=>{
-			let kpi_name = chartid.split('-')[0],
-				chartConfigs = this.kpilist[kpi_name][chartid];
-			chartConfigs._filter = null;
-			console.log(chartConfigs);
-			if(chartConfigs._selectedvalue && chartConfigs._selectedvalue.id!==0 && (chartConfigs._mon || chartConfigs._eDate || chartConfigs._sDate))
-			{
-				console.log("1");
-				chartConfigs._filter = 1;
-			}
-			else if(chartConfigs._divisions && chartConfigs._divisions.length!==0)
-			{
-				console.log("2");
-				console.log(chartConfigs._divisions.length);
-				chartConfigs._filter = 1;
-
-			}
-			else {
-				chartConfigs._filter = null;
-			}
-		},300);
-	}*/
-	check(event: any,chartid: string) {
+	check(event: any) {
 		console.log(event);
-		let kpi_name = chartid.split('-')[0];
-		console.log(this.kpilist[kpi_name][chartid]._divisions);
-		// this.getNonDrilldownChart([],chartid);
 	}
 	getCharts(kpi: any) {
 		this.chartDataService.getCharts(kpi).subscribe(data => {
@@ -227,7 +199,7 @@ export class Dashboard {
 					this.kpilist[kpi.kpi_name][chartid]._chart.addSeries(chart.data[i]);
 				}
 			}
-			console.log(this.kpilist);
+			// console.log(this.kpilist);
 		},
 		(err) => {
 			alert(err);
@@ -238,7 +210,7 @@ export class Dashboard {
 		this.chartDataService.getKPIs().subscribe(res => {
 			var kpis = res['data'],name;
 			this.kpis = kpis;
-			// console.log(kpis);
+			console.log(kpis);
 			// for each kpi, create kpilist map, getCharts for each KPI. filter charts on kpi.version
 			for(var kpi of kpis){
 				this.getCharts(kpi);
@@ -249,17 +221,12 @@ export class Dashboard {
 			alert(err);
 		});
 	}
-	update(filter: any) {
-		// console.log(JSON.stringify(filter));
-		this.chartDataService.getCharts(filter).subscribe((data) => {
-
-		});
-	}
 	
 	filterDivisions(event,kpi_name: string,version: string) {
 		var chartid = kpi_name+'-'+version,
 			query = event.query,
 			filtered : any[] = [];
+		// console.log(query);
 		/*this.chartFilterService.getFilteredResults(query).subscribe(filtered => {
 			this.kpilist[kpi_name][chartid]._filteredDivisions = filtered;
 		},
@@ -272,76 +239,62 @@ export class Dashboard {
                 filtered.push(country);
             }
         }
-        this.filter._filteredDivisions = filtered;
+        this.kpilist[kpi_name][chartid]._filteredDivisions = filtered;
 	}
 	division = [{name: "India", type: "Country"},
-				 {name: "East", type: "Zone"},	
+				 {name: "East", type: "Zone"},
 				 {name: "Assam", type: "State"},
-				 {name: "Ex.guwahati", type: "City"},
+				 {name: "Guwahati", type: "City"},
 				 {name: "GUW", type: "DC"}]
-	selection(event) {
+	selection(event,chartid: string) {
+		let kpi_name = chartid.split('-')[0];
 		if(!event){
-			this.filter._mon = null;
-			this.filter._sDate = null;
-			this.filter._eDate = null;
-			this.filter._maxDate = null;
+			this.kpilist[kpi_name][chartid]._mon = null;
+			this.kpilist[kpi_name][chartid]._eDate = null;
+			this.kpilist[kpi_name][chartid]._sDate = null;
+			this.kpilist[kpi_name][chartid]._maxDate = null;
+			this.getChart(chartid,"Selection");
 		}
 		switch((event && event.id))
 		{
 			case 1:
-				this.filter._sDate = null;
-				this.filter._eDate = null;
-				this.filter._maxDate = null;
+				this.kpilist[kpi_name][chartid]._sDate = null;
+				this.kpilist[kpi_name][chartid]._eDate = null;
+				this.kpilist[kpi_name][chartid]._maxDate = null;
 				break;
 			case 2:
-				this.filter._mon = null;
+				this.kpilist[kpi_name][chartid]._mon = null;
 				break;
 		}
+	}
+	update(event,chartid: string) {
+		// console.log(event);
+		this.getChart(chartid,"datepicker");
 	}
 	setGlobalMaxDate() {
 		this.MAX_DATE = new Date();
 	}
-	setMaxDate() {
-		var temp_date = this.filter._sDate;
+	setMaxDate(id: string) {
+		var kpi_name = id.split('-')[0];
+		var temp_date = this.kpilist[kpi_name][id]._sDate;
 		var temp2 = new Date();
 		var temp = new Date(temp_date);
 		temp.setDate(temp.getDate() + 31);
-		this.filter._maxDate = (temp>temp2)?temp2:temp;
+		this.kpilist[kpi_name][id]._maxDate = (temp>temp2)?temp2:temp;
 	}
-	updateChild(event) {
-		var shallowCopy;
-		if(this.filter && this.filter._mon) {
-			shallowCopy = {...this.filter,
-				_mon: new Date(this.filter._mon).toLocaleDateString('en-US')};//.toLocaleString('en-IN');
-		}
-		else
-			shallowCopy = this.filter;
-		console.log(JSON.stringify(shallowCopy));
-		this.children['table']._child.update(shallowCopy);
-	}
-	
-	MAX_DATE = new Date();
-	filter = {
-		_selectedvalue: null,
-		_maxDate: null,
-		_mon: null,
-		_sDate: null,
-		_eDate: null,
-		_divisions: null,
-		_filteredDivisions: null,
-		_filter: null,
-	}
-	kpis: any;
-	drilldownsAdded: any;
-	kpilist: Map<string,any> = new Map<string,any>();
-  	children: Map<string,any> = new Map<string,any>();
-  	options = [
+	// getPayload(chartid)
+	options = [
 		{id: 1, value: 'Month'},
 		{id: 2, value: 'Range'}
 	];
-  	@ViewChild('table') table: SmartTables;
-  	ngOnInit() {
-  		this.children['table'] = {_child: this.table};
-  		this.getKPIs()
-  	}
+
+	kpis: any;
+	MAX_DATE = new Date();
+	drilldownsAdded = 0;
+	kpilist: Map<string,any> = new Map();
+	ngOnInit() {
+		this.drilldownsAdded = 0;
+		this.MAX_DATE = new Date();
+		this.getKPIs();
+	}
 }
