@@ -11,7 +11,7 @@ export class ChartDataService {
     
     private extractData(res: Response) {
         let body = res.json();
-        // console.log(body);
+        console.log(JSON.stringify(body));
         return body || { };
     }
     private handleError(error: Response | any) {
