@@ -94,7 +94,7 @@ export class Dashboard {
 															_sDate: prevConfig._sDate,
 															_eDate: prevConfig._eDate,
 															_divisions: prevConfig._divisions,
-															_filteredDivisions: prevConfig._filteredDivisions
+															_filteredDivisions: prevConfig._filteredDivisions,
 														};
 		}
 		else{
@@ -106,7 +106,7 @@ export class Dashboard {
 													_sDate: null,
 													_eDate: null,
 													_divisions: null,
-													_filteredDivisions: null
+													_filteredDivisions: null,
 												};									
 		}
 		var chart = new Highcharts.Chart(data);
