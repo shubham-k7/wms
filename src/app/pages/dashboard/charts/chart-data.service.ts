@@ -43,9 +43,7 @@ export class ChartDataService {
     getKPIs(): Observable<any> {
         var url = 'http://52.70.207.115:8087/api/v1/kpi/';
         let headers = new Headers({'content-type': 'application/json'});
-        // headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
         var token = JSON.parse(sessionStorage.getItem('currentUser'))['token'];
-        // console.log(token);
         token = "Token "+token;
         headers.append('Authorization', token);
         let options = new RequestOptions({ headers: headers});
@@ -55,7 +53,6 @@ export class ChartDataService {
         var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
         let headers = new Headers({'content-type': 'application/json'});
         var token = JSON.parse(sessionStorage.getItem('currentUser'))['token'];
-        // console.log(token);
         token = "Token "+token;
         headers.append('Authorization', token);
         let tempList = [];
@@ -70,7 +67,6 @@ export class ChartDataService {
         var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
         let headers = new Headers({'content-type': 'application/json'});
         var token = JSON.parse(sessionStorage.getItem('currentUser'))['token'];
-        // console.log(token);
         token = "Token "+token;
         headers.append('Authorization', token);
         let options = new RequestOptions({ headers: headers});
@@ -82,7 +78,6 @@ export class ChartDataService {
         var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
         let headers = new Headers({'content-type': 'application/json'});
         var token = JSON.parse(sessionStorage.getItem('currentUser'))['token'];
-        // console.log(token);
         token = "Token "+token;
         headers.append('Authorization', token);
         let options = new RequestOptions({ headers: headers});
