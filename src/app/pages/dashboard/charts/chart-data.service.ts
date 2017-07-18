@@ -30,35 +30,49 @@ export class ChartDataService {
     getChart(payload: any): Observable<any> {
         var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
         let headers = new Headers({'content-type': 'application/json'});
-        headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
+        var token = JSON.parse(sessionStorage.getItem('currentUser'))['token'];
+        // console.log(token);
+        token = "Token "+token;
+        headers.append('Authorization', token);
         let options = new RequestOptions({ headers: headers});
-        payload = JSON.stringify(payload); 
-        return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
+        payload = JSON.stringify(payload);
+        return null; 
+        // return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
     }
 
     getKPIs(): Observable<any> {
         var url = 'http://52.70.207.115:8087/api/v1/kpi/';
         let headers = new Headers({'content-type': 'application/json'});
-        headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
+        // headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
+        var token = JSON.parse(sessionStorage.getItem('currentUser'))['token'];
+        // console.log(token);
+        token = "Token "+token;
+        headers.append('Authorization', token);
         let options = new RequestOptions({ headers: headers});
         return this.http.get(url,options).map(this.extractData).catch(this.handleError);
     }
     getCharts(kpi: any): Observable<any> {
         var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
         let headers = new Headers({'content-type': 'application/json'});
-        headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
-        let options = new RequestOptions({ headers: headers});
+        var token = JSON.parse(sessionStorage.getItem('currentUser'))['token'];
+        // console.log(token);
+        token = "Token "+token;
+        headers.append('Authorization', token);
         let tempList = [];
         for(let version of kpi.versions){
             tempList.push(version.name);
         }
+        let options = new RequestOptions({ headers: headers});
         var payload = JSON.stringify({kpi_id: kpi.kpi_name,version_ids: tempList,report_type: "0",name: [],series_name: "",chartConfigs: {_filter: null}});
         return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
     }
     getDrilldownChart(payload: any): Observable<any> {
         var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
         let headers = new Headers({'content-type': 'application/json'});
-        headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
+        var token = JSON.parse(sessionStorage.getItem('currentUser'))['token'];
+        // console.log(token);
+        token = "Token "+token;
+        headers.append('Authorization', token);
         let options = new RequestOptions({ headers: headers});
         payload = JSON.stringify(payload); 
         return this.http.post(url,payload,options).map(this.extractData).catch(this.handleError);
@@ -67,7 +81,10 @@ export class ChartDataService {
     getChartData(payload: any): Observable<any> {
         var url = 'http://52.70.207.115:8087/api/v1/inscan/report/';
         let headers = new Headers({'content-type': 'application/json'});
-        headers.append('Authorization', 'Token 6a408c2bc8db8c8dc151a6390ab631f3c1931f6f');
+        var token = JSON.parse(sessionStorage.getItem('currentUser'))['token'];
+        // console.log(token);
+        token = "Token "+token;
+        headers.append('Authorization', token);
         let options = new RequestOptions({ headers: headers});
         return this.http.post(url, JSON.stringify(payload),options).map(this.extractData).catch(this.handleError);
     }
