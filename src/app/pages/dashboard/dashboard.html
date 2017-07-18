@@ -1,5 +1,5 @@
 <div *ngFor="let kpi of kpis">	
-    <h4>KPI: {{kpi.kpi_name}}</h4>
+    <h4>KPI: {{kpi.label}}</h4>
     <div *ngFor="let chart of kpi.versions; let i = index; let l = last;">
         <div class="col col-sm-6" [style.float]="(i%2==0 || i==l)?'left':'right'">
             <ba-card cardTitle="{{chart.label}}">
